@@ -27,10 +27,10 @@ const BADGE_DEFINITIONS = [
         id: "foodchain_hero",
         name: "Food Chain Hero",
         emoji: "🌿",
-        desc: "Aced a Food Chains question",
+        desc: "Aced Producer and consumer questions",
         check: (attempts, badges) => attempts.some(a => {
-            const foodChainCorrect = a.correctAnswers.some(c => (c.topic === "Food Chains") && c.answerCorrect);
-            const foodChainWrong = a.wrongAnswers.some(w => w.topic === "Food Chains");
+            const foodChainCorrect = a.correctAnswers.some(c => (c.topic === "Producer and consumer") && c.answerCorrect);
+            const foodChainWrong = a.wrongAnswers.some(w => w.topic === "Producer and consumer");
             return foodChainCorrect && !foodChainWrong;
         })
     },
@@ -38,10 +38,10 @@ const BADGE_DEFINITIONS = [
         id: "skeleton_solver",
         name: "Skeleton Solver",
         emoji: "🦴",
-        desc: "Aced a Skeletons question",
+        desc: "Aced a Functions of the skeleton question",
         check: (attempts, badges) => attempts.some(a => {
-            const skelCorrect = a.correctAnswers.some(c => (c.topic === "Skeletons") && c.answerCorrect);
-            const skelWrong = a.wrongAnswers.some(w => w.topic === "Skeletons");
+            const skelCorrect = a.correctAnswers.some(c => (c.topic === "Functions of the skeleton") && c.answerCorrect);
+            const skelWrong = a.wrongAnswers.some(w => w.topic === "Functions of the skeleton");
             return skelCorrect && !skelWrong;
         })
     },
@@ -49,12 +49,37 @@ const BADGE_DEFINITIONS = [
         id: "metal_master",
         name: "Metal Master",
         emoji: "🔧",
-        desc: "Aced a Metals question",
+        desc: "Aced a Metals vs non-metals question",
         check: (attempts, badges) => attempts.some(a => {
-            const metalCorrect = a.correctAnswers.some(c => (c.topic === "Metals and Non-metals") && c.answerCorrect);
-            const metalWrong = a.wrongAnswers.some(w => w.topic === "Metals and Non-metals");
+            const metalCorrect = a.correctAnswers.some(c => (c.topic === "Metals vs non-metals") && c.answerCorrect);
+            const metalWrong = a.wrongAnswers.some(w => w.topic === "Metals vs non-metals");
             return metalCorrect && !metalWrong;
         })
+    },
+    {
+        id: "exam_ready",
+        name: "Exam Ready!",
+        emoji: "📝",
+        desc: "Scored 80% or more on a full exam",
+        check: (attempts, badges) => attempts.some(a => a.score >= 80 && a.type === "full")
+    },
+    {
+        id: "must_know_master",
+        name: "Must Know Master",
+        emoji: "🧠",
+        desc: "Got all Must Know questions correct",
+        check: (attempts, badges) => {
+            const mustKnowTopics = [
+                "Habitat", "Biodiversity", "Interdependence", "Vertebrate vs Invertebrate",
+                "Functions of the skeleton", "Joint and ligament", "Producer and consumer",
+                "Food Chains", "Butterfly life cycle", "Metals vs non-metals",
+                "Uses of metals", "Processing materials"
+            ];
+            return attempts.some(a => {
+                const wrongTopics = new Set(a.wrongAnswers.map(w => w.topic));
+                return mustKnowTopics.every(t => !wrongTopics.has(t)) && a.correctAnswers.some(c => mustKnowTopics.includes(c.topic));
+            });
+        }
     },
     {
         id: "revision_champion",

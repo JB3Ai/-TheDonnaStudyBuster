@@ -506,6 +506,11 @@ header {
     align-items: start;
 }
 
+.calendar-card.non-study {
+    opacity: 0.6;
+    background: #f8fafc;
+}
+
 .calendar-date {
     background: linear-gradient(135deg, var(--purple-500), var(--blue-500));
     color: white;
@@ -537,70 +542,38 @@ header {
     margin-bottom: 4px;
 }
 
-.calendar-topics {
-    list-style: none;
-    margin: 8px 0;
-}
-
-.calendar-topics li {
-    padding: 4px 0;
-    position: relative;
-    padding-left: 18px;
-}
-
-.calendar-topics li::before {
-    content: "•";
-    position: absolute;
-    left: 0;
-    color: var(--purple-500);
-    font-weight: bold;
-}
-
-.countdown-banner {
-    background: white;
-    border-radius: var(--radius);
-    padding: 15px;
-    text-align: center;
-    box-shadow: var(--shadow);
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    flex-wrap: wrap;
-}
-
-.countdown-number {
-    font-size: 2rem;
-    font-weight: 800;
-    color: var(--purple-500);
-}
-
-.countdown-label {
-    font-weight: 600;
-    color: var(--text-mid);
-}
-
-.status-badge {
+.priority-badge {
     display: inline-block;
     padding: 4px 10px;
     border-radius: 20px;
     font-size: 0.8rem;
     font-weight: 700;
+    margin-bottom: 6px;
 }
 
-.status-upcoming {
-    background: #dbeafe;
+.priority-very-high {
+    background: var(--purple-100);
+    color: var(--purple-700);
+}
+
+.priority-high {
+    background: var(--blue-100);
     color: var(--blue-700);
 }
 
-.status-thisweek {
-    background: #fef3c7;
-    color: var(--warning);
+.priority-medium {
+    background: #ccfbf1;
+    color: #0f766e;
 }
 
-.priority {
-    font-size: 0.8rem;
+.priority-none {
+    background: #e2e8f0;
+    color: #64748b;
+}
+
+.study-status {
+    font-size: 0.9rem;
+    font-weight: 600;
     color: var(--text-mid);
     margin-top: 4px;
 }
@@ -700,6 +673,39 @@ header {
 
 .badge-unlocked .badge-emoji {
     animation: bounce 0.6s ease;
+}
+
+/* ---- GAP ANALYSIS ---- */
+.gap-summary {
+    background: var(--light-bg);
+    border-radius: 12px;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+.gap-summary p {
+    margin: 4px 0;
+}
+
+.gap-list {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0;
+}
+
+.gap-list li {
+    padding: 8px 12px;
+    margin-bottom: 6px;
+    border-radius: 8px;
+    background: #f8fafc;
+}
+
+.gap-list.correct-list li {
+    border-left: 4px solid var(--success);
+}
+
+.gap-list.wrong-list li {
+    border-left: 4px solid var(--danger);
 }
 
 /* ---- NAVIGATION ---- */

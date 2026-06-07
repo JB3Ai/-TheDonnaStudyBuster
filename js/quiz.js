@@ -137,40 +137,46 @@ function selectOption(btn, opt) {
 // ---- SUBMIT ANSWER ----
 function submitAnswer() {
     const q = currentQuiz[currentIndex];
-    let userAnswer;
+    let userAnswer = "";
     let isCorrect = false;
 
     if (q.type === "mcq") {
         userAnswer = selectedOptionText || "";
         isCorrect = userAnswer.toLowerCase() === q.answer.toLowerCase();
     } else {
+        // SMART TYPED ANSWER CHECKING FOR DONNA
         const input = document.getElementById("typedAnswer");
-        userAnswer = input.value.trim();
-        isCorrect = userAnswer.toLowerCase() === q.answer.toLowerCase();
+        userAnswer = input.value.trim().toLowerCase();
+        
+        let keywordsMatched = 0;
+        q.answer.forEach(keyword => {
+            if (userAnswer.includes(keyword.toLowerCase())) {
+                keywordsMatched++;
+            }
+        });
+        
+        const requiredMatches = q.marks > 1 ? 2 : 1; 
+        isCorrect = keywordsMatched >= requiredMatches;
     }
 
-    // Record answer
     const answerRecord = {
         questionId: q.id,
         topic: q.topic,
-        page: q.page,
         question: q.question,
-        correctAnswer: q.answer,
+        correctAnswer: q.type === "mcq" ? q.answer : q.answer.join(", "),
         userAnswer: userAnswer,
         answerCorrect: isCorrect,
         explanation: q.explanation,
-        lesson: q.lesson,
-        videoPrompt: q.videoPrompt
+        marks: q.marks
     };
 
     if (isCorrect) {
-        scoreCount++;
-        currentAnswers.push({ questionId: q.id, topic: q.topic, correct: true });
+        scoreCount += q.marks;
+        currentAnswers.push({ questionId: q.id, topic: q.topic, correct: true, marks: q.marks });
     } else {
-        currentAnswers.push({ questionId: q.id, topic: q.topic, correct: false });
+        currentAnswers.push({ questionId: q.id, topic: q.topic, correct: false, marks: 0 });
     }
 
-    // Show feedback
     const fb = document.getElementById("feedback");
     fb.classList.remove("hidden");
     fb.className = "feedback " + (isCorrect ? "feedback-correct" : "feedback-wrong");
@@ -181,11 +187,10 @@ function submitAnswer() {
 
     document.getElementById("correctAnswer").textContent = isCorrect
         ? ""
-        : `The correct answer is: ${q.answer}`;
+        : `Key things to mention: ${q.type === "mcq" ? q.answer : q.answer.join(", ")}`;
 
     document.getElementById("explanationText").textContent = q.explanation;
 
-    // Highlight options
     if (q.type === "mcq") {
         document.querySelectorAll(".option-btn").forEach(btn => {
             btn.classList.remove("selected");
@@ -209,7 +214,8 @@ function nextQuestion() {
 // ---- FINISH QUIZ ----
 function finishQuiz() {
     quizFinished = true;
-    const score = Math.round((scoreCount / currentQuiz.length) * 100);
+    const totalMarks = currentQuiz.reduce((sum, q) => sum + (q.marks || 1), 0);
+    const score = totalMarks > 0 ? Math.round((scoreCount / totalMarks) * 100) : 0;
 
     const correctAnswersList = [];
     const wrongAnswersList = [];
@@ -220,29 +226,18 @@ function finishQuiz() {
             topic: q.topic,
             page: q.page,
             question: q.question,
-            correctAnswer: q.answer,
-            userAnswer: currentAnswers[i] ? (i < currentQuiz.length ? currentQuiz[i].userAnswer || "" : "") : "",
+            correctAnswer: Array.isArray(q.answer) ? q.answer.join(", ") : q.answer,
+            userAnswer: currentAnswers[i] ? (i < currentQuiz.length ? currentAnswers[i].userAnswer || "" : "") : "",
             answerCorrect: currentAnswers[i] ? currentAnswers[i].correct : false,
             explanation: q.explanation,
             lesson: q.lesson,
-            videoPrompt: q.videoPrompt
+            videoPrompt: q.videoPrompt,
+            marks: q.marks || 1
         };
         if (currentAnswers[i] && currentAnswers[i].correct) {
             correctAnswersList.push(record);
         } else {
             wrongAnswersList.push(record);
-        }
-    });
-
-    // Fill in userAnswer from our tracked answers array
-    currentQuiz.forEach((q, i) => {
-        if (currentAnswers[i]) {
-            correctAnswersList.forEach(c => {
-                if (c.questionId === q.id) c.userAnswer = currentAnswers[i].userAnswer || "";
-            });
-            wrongAnswersList.forEach(w => {
-                if (w.questionId === q.id) w.userAnswer = currentAnswers[i].userAnswer || "";
-            });
         }
     });
 
@@ -254,8 +249,10 @@ function finishQuiz() {
         type: currentTopicFilter !== "all" ? "retest" : "full",
         topicFilter: currentTopicFilter,
         score: score,
+        totalMarks: totalMarks,
+        earnedMarks: scoreCount,
         totalQuestions: currentQuiz.length,
-        correctCount: scoreCount,
+        correctCount: correctAnswersList.length,
         correctAnswers: correctAnswersList,
         wrongAnswers: wrongAnswersList,
         weakTopics: detectWeakTopics(wrongAnswersList),
@@ -294,7 +291,7 @@ function generateRecommendation(wrongAnswers) {
     const page = wrongAnswers[0].page;
     return {
         topic: worst,
-        message: `Practice ${worst}}. Focus on pages ${page}.`,
+        message: `Practice ${worst}. Focus on pages ${page}.`,
         page: page,
         lesson: `Review ${worst}. Read textbook pages ${page}. Do 5 practice questions.`
     };
