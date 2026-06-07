@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Results - The Donna Study Buster!</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1 class="app-title">🐢 The Donna Study Buster! 🐼</h1>
+            <p class="subtitle">Grade 5 South African CAPS</p>
+        </header>
+
+        <nav class="subject-tabs" id="subjectTabs"></nav>
+
+        <main>
+            <section class="dashboard-section">
+                <h2>📊 Dad Dashboard</h2>
+                <div id="noResults" class="empty-state">
+                    <div class="mascot">📊</div>
+                    <h2>No attempts yet!</h2>
+                    <p>Take your first quiz to see results.</p>
+                    <a href="index.html" class="btn btn-primary">Start Quiz</a>
+                </div>
+
+                <div id="dashboard" class="dashboard hidden">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <h3>Latest Score</h3>
+                            <p id="latestScore" class="stat-value">-</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Average Score</h3>
+                            <p id="avgScore" class="stat-value">-</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Best Score</h3>
+                            <p id="bestScore" class="stat-value">-</p>
+                        </div>
+                    </div>
+
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <h3>Weakest Subject</h3>
+                            <p id="weakestSubject" class="stat-value">-</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Weakest Topic</h3>
+                            <p id="weakestTopic" class="stat-value">-</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Total Quizzes</h3>
+                            <p id="totalQuizzes" class="stat-value">-</p>
+                        </div>
+                    </div>
+
+                    <div class="stat-card full-width">
+                        <h3>Recommended Next Steps</h3>
+                        <p id="recommendedLesson" class="recommendation"></p>
+                        <button onclick="copyVideoPrompt()" class="btn btn-outline btn-sm">Copy Video Prompt</button>
+                    </div>
+                </div>
+            </section>
+
+            <hr class="section-divider">
+
+            <section>
+                <h2>📈 Gap Analysis Report</h2>
+                <div id="gapAnalysis" class="gap-report hidden"></div>
+                <p id="noAttemptsMsg" class="empty-state">Complete a quiz to see your gap report.</p>
+            </section>
+
+            <hr class="section-divider">
+
+            <section>
+                <h2>⚡ Retest Weak Topics</h2>
+                <button id="retestWeak" class="btn btn-primary hidden">Retest My Weak Topics</button>
+                <p id="retestMsg" class="empty-state hidden">Great job! No weak topics to retest.</p>
+            </section>
+
+            <hr class="section-divider">
+
+            <section>
+                <h2>📤 Export</h2>
+                <div class="btn-group">
+                    <button onclick="exportJSON()" class="btn btn-outline">Export JSON</button>
+                    <button onclick="exportTXT()" class="btn btn-outline">Export TXT</button>
+                    <button onclick="copyReportChatGPT()" class="btn btn-outline">Copy for ChatGPT</button>
+                    <button onclick="clearAllData()" class="btn btn-danger">Clear All Results</button>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>Made with ❤️ for Donna's study time</p>
+        </footer>
+    </div>
+
+    <script src="js/storage.js"></script>
+    <script src="js/questions.js"></script>
+    <script src="js/badges.js"></script>
+    <script src="js/results.js"></script>
+</body>
+</html>

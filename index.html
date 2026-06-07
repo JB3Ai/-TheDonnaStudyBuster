@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Donna Study Buster!</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1 class="app-title">🐢 The Donna Study Buster! 🐼</h1>
+            <p class="subtitle">Grade 5 South African CAPS</p>
+        </header>
+
+        <nav class="subject-tabs" id="subjectTabs"></nav>
+
+        <main>
+            <div class="welcome-card">
+                <div class="mascot-row">
+                    <span class="mascot">🐢</span>
+                    <span class="mascot">🐼</span>
+                    <span class="mascot">📚</span>
+                </div>
+                <h2>Welcome, Donna!</h2>
+                <p class="badge-display" id="homeBadges"></p>
+                <div class="btn-group">
+                    <button onclick="startSubjectQuiz()" class="btn btn-primary">Start Quiz</button>
+                    <a href="lessons.html" class="btn btn-secondary">Lessons</a>
+                    <a href="results.html" class="btn btn-secondary">Results</a>
+                    <a href="calendar.html" class="btn btn-secondary">Exam Calendar</a>
+                    <a href="resources.html" class="btn btn-secondary">Study Tools</a>
+                </div>
+            </div>
+
+            <div id="quizArea" class="hidden">
+                <div class="quiz-header">
+                    <div class="progress-bar">
+                        <div id="progressFill" class="progress-fill"></div>
+                    </div>
+                    <span id="questionCounter" class="question-counter">1 of 10</span>
+                    <select id="topicFilter" class="topic-select">
+                        <option value="all">All Topics</option>
+                    </select>
+                </div>
+
+                <div class="question-card">
+                    <span id="topicBadge" class="topic-badge"></span>
+                    <span id="subjectBadge" class="subject-badge"></span>
+                    <p id="questionText" class="question-text"></p>
+
+                    <div id="optionsContainer"></div>
+
+                    <div id="typedAnswerContainer" class="typed-answer-container hidden">
+                        <input type="text" id="typedAnswer" class="typed-input" placeholder="Type your answer..." autocomplete="off">
+                    </div>
+
+                    <button id="submitAnswer" class="btn btn-primary hidden">Submit Answer</button>
+
+                    <div id="feedback" class="feedback hidden">
+                        <p id="feedbackText"></p>
+                        <p id="correctAnswer" class="correct-answer"></p>
+                        <p id="explanationText" class="explanation"></p>
+                    </div>
+                </div>
+
+                <button id="nextQuestion" class="btn btn-next hidden">Next Question →</button>
+            </div>
+        </main>
+
+        <footer>
+            <p>Made with ❤️ for Donna's study time</p>
+        </footer>
+    </div>
+
+    <script src="js/storage.js"></script>
+    <script src="js/questions.js"></script>
+    <script src="js/badges.js"></script>
+    <script src="js/quiz.js"></script>
+</body>
+</html>
