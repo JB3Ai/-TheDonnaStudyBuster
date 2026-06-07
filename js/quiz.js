@@ -55,8 +55,8 @@ function startSubjectQuiz(topic = "all") {
         return;
     }
 
-    // Shuffle questions for variety
-    currentQuiz = shuffleArray([...questions]).slice(0, Math.min(10, questions.length));
+    // For a full exam, show all available questions in order. (If retesting a specific topic, it will only show those).
+    currentQuiz = currentTopicFilter === "all" ? [...questions] : shuffleArray([...questions]);
     currentIndex = 0;
     currentAnswers = [];
     scoreCount = 0;
